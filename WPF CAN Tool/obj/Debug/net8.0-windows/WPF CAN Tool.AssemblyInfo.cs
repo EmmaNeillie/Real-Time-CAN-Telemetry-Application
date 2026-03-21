@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WPF CAN Tool")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+95254a52a05ff9a6e0d31c15e1160a0cff9581d3")]
 [assembly: System.Reflection.AssemblyProductAttribute("WPF CAN Tool")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WPF CAN Tool")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

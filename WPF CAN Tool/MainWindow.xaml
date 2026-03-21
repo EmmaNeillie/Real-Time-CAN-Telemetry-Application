@@ -5,43 +5,197 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_CAN_Tool"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid Background="Black">
+        Title="UGRacing CAN Display"
+        Height="700" Width="1100"
+        Background="Black">
+
+    <Grid Margin="15">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="UGRacing CAN Display" Foreground="#FFD700" FontSize="36" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,20,0,20"/>
-        
-        <Grid Grid.Row="1" Margin="20">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            
-            <Border Grid.Row="0" Grid.Column="0" BorderBrush="#FFD700" BorderThickness="2" Margin="5">
-                <TextBlock Text="Block 1" Foreground="#FFD700" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+
+        <!-- Header -->
+        <DockPanel Grid.Row="0" Margin="0,0,0,15">
+            <TextBlock Text="UGRacing CAN Display"
+                       Foreground="#FFD700"
+                       FontSize="32"
+                       FontWeight="Bold"
+                       DockPanel.Dock="Left"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Text="Mode: "
+                           Foreground="White"
+                           FontSize="16"
+                           Margin="20,0,5,0"/>
+                <TextBlock Text="{Binding ConnectionMode}"
+                           Foreground="#FFD700"
+                           FontSize="16"
+                           FontWeight="Bold"/>
+
+                <TextBlock Text="   Status: "
+                           Foreground="White"
+                           FontSize="16"
+                           Margin="20,0,5,0"/>
+                <TextBlock Text="{Binding ConnectionStatus}"
+                           Foreground="Lime"
+                           FontSize="16"
+                           FontWeight="Bold"/>
+            </StackPanel>
+        </DockPanel>
+
+        <!-- Main live values -->
+        <UniformGrid Grid.Row="1" Columns="3" Margin="0,0,0,15">
+
+            <Border BorderBrush="#FFD700" BorderThickness="2" CornerRadius="8" Margin="5" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Accelerator"
+                               Foreground="White"
+                               FontSize="18"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding AcceleratorPercentage, StringFormat={}{0:F1}%}"
+                               Foreground="#FFD700"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
             </Border>
-            <Border Grid.Row="0" Grid.Column="1" BorderBrush="#FFD700" BorderThickness="2" Margin="5">
-                <TextBlock Text="Block 2" Foreground="#FFD700" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+
+            <Border BorderBrush="#FFD700" BorderThickness="2" CornerRadius="8" Margin="5" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Brake"
+                               Foreground="White"
+                               FontSize="18"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding BrakePercentage, StringFormat={}{0:F1}%}"
+                               Foreground="#FFD700"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
             </Border>
-            <Border Grid.Row="0" Grid.Column="2" BorderBrush="#FFD700" BorderThickness="2" Margin="5">
-                <TextBlock Text="Block 3" Foreground="#FFD700" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+
+            <Border BorderBrush="#FFD700" BorderThickness="2" CornerRadius="8" Margin="5" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Motor RPM"
+                               Foreground="White"
+                               FontSize="18"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding MotorRpm, StringFormat={}{0:F0} rpm}"
+                               Foreground="#FFD700"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
             </Border>
-            <Border Grid.Row="1" Grid.Column="0" BorderBrush="#FFD700" BorderThickness="2" Margin="5">
-                <TextBlock Text="Block 4" Foreground="#FFD700" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+
+            <Border BorderBrush="#FFD700" BorderThickness="2" CornerRadius="8" Margin="5" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Energy Setting"
+                               Foreground="White"
+                               FontSize="18"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding EnergySetting}"
+                               Foreground="#FFD700"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
             </Border>
-            <Border Grid.Row="1" Grid.Column="1" BorderBrush="#FFD700" BorderThickness="2" Margin="5">
-                <TextBlock Text="Block 5" Foreground="#FFD700" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+
+            <Border BorderBrush="#FFD700" BorderThickness="2" CornerRadius="8" Margin="5" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="BOTS Status"
+                               Foreground="White"
+                               FontSize="18"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding BOTSStatus}"
+                               Foreground="Lime"
+                               FontSize="28"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
             </Border>
-            <Border Grid.Row="1" Grid.Column="2" BorderBrush="#FFD700" BorderThickness="2" Margin="5">
-                <TextBlock Text="Block 6" Foreground="#FFD700" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+
+            <Border BorderBrush="#FFD700" BorderThickness="2" CornerRadius="8" Margin="5" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="APPS Status"
+                               Foreground="White"
+                               FontSize="18"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding APPSStatus}"
+                               Foreground="Lime"
+                               FontSize="28"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
             </Border>
-        </Grid>
+        </UniformGrid>
+
+        <!-- Wheel panel -->
+        <GroupBox Grid.Row="2"
+                  Header="Wheel Speeds / Brake Temps"
+                  Foreground="#FFD700"
+                  BorderBrush="#FFD700"
+                  Margin="0,0,0,15"
+                  Padding="10">
+            <UniformGrid Columns="2">
+                <Border BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="10">
+                    <StackPanel>
+                        <TextBlock Text="Front Left" Foreground="White" FontWeight="Bold" FontSize="18"/>
+                        <TextBlock Text="{Binding FLWheelSpeed, StringFormat=Speed: {0} }" Foreground="White" FontSize="16"/>
+                        <TextBlock Text="{Binding FLBrakeTemp, StringFormat=Brake Temp: {0} °C}" Foreground="White" FontSize="16"/>
+                    </StackPanel>
+                </Border>
+
+                <Border BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="10">
+                    <StackPanel>
+                        <TextBlock Text="Front Right" Foreground="White" FontWeight="Bold" FontSize="18"/>
+                        <TextBlock Text="{Binding FRWheelSpeed, StringFormat=Speed: {0} }" Foreground="White" FontSize="16"/>
+                        <TextBlock Text="{Binding FRBrakeTemp, StringFormat=Brake Temp: {0} °C}" Foreground="White" FontSize="16"/>
+                    </StackPanel>
+                </Border>
+
+                <Border BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="10">
+                    <StackPanel>
+                        <TextBlock Text="Rear Left" Foreground="White" FontWeight="Bold" FontSize="18"/>
+                        <TextBlock Text="{Binding RLWheelSpeed, StringFormat=Speed: {0} }" Foreground="White" FontSize="16"/>
+                        <TextBlock Text="{Binding RLBrakeTemp, StringFormat=Brake Temp: {0} °C}" Foreground="White" FontSize="16"/>
+                    </StackPanel>
+                </Border>
+
+                <Border BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="10">
+                    <StackPanel>
+                        <TextBlock Text="Rear Right" Foreground="White" FontWeight="Bold" FontSize="18"/>
+                        <TextBlock Text="{Binding RRWheelSpeed, StringFormat=Speed: {0} }" Foreground="White" FontSize="16"/>
+                        <TextBlock Text="{Binding RRBrakeTemp, StringFormat=Brake Temp: {0} °C}" Foreground="White" FontSize="16"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+        </GroupBox>
+
+        <!-- Raw CAN frames -->
+        <DataGrid Grid.Row="3"
+                  ItemsSource="{Binding RawFrames}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  IsReadOnly="True"
+                  Background="#111111"
+                  Foreground="White"
+                  BorderBrush="#FFD700"
+                  RowBackground="#111111"
+                  AlternatingRowBackground="#1A1A1A"
+                  HeadersVisibility="Column">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Time" Binding="{Binding Timestamp}" Width="160"/>
+                <DataGridTextColumn Header="ID" Binding="{Binding IdHex}" Width="100"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding MessageName}" Width="180"/>
+                <DataGridTextColumn Header="Mux" Binding="{Binding Mux}" Width="60"/>
+                <DataGridTextColumn Header="Data" Binding="{Binding DataHex}" Width="220"/>
+                <DataGridTextColumn Header="Decoded" Binding="{Binding Summary}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
