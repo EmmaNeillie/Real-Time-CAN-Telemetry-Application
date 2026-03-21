@@ -1,0 +1,153 @@
+﻿<Page x:Class="WPF_CAN_Tool.Pages.TsOverviewPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="TS Overview"
+      Background="Black">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Text="TS Overview"
+                       Foreground="#FFD700"
+                       FontSize="34"
+                       FontWeight="Bold"
+                       Margin="0,0,0,20"/>
+
+            <!-- Electrical -->
+            <UniformGrid Grid.Row="1" Columns="3" Margin="0,0,0,20">
+                <Border BorderBrush="#FFD700" BorderThickness="2" CornerRadius="8" Margin="6" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="Accumulator Voltage"
+                                   Foreground="White"
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding AccumulatorVoltage, StringFormat={}{0:F1} V}"
+                                   Foreground="#FFD700"
+                                   FontSize="30"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <Border BorderBrush="#FFD700" BorderThickness="2" CornerRadius="8" Margin="6" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="Accumulator Current"
+                                   Foreground="White"
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding AccumulatorCurrent, StringFormat={}{0:F1} A}"
+                                   Foreground="#FFD700"
+                                   FontSize="30"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <Border BorderBrush="#FFD700" BorderThickness="2" CornerRadius="8" Margin="6" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="Pack Power"
+                                   Foreground="White"
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding PackPower, StringFormat={}{0:F1} kW}"
+                                   Foreground="#FFD700"
+                                   FontSize="30"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Temperatures -->
+            <UniformGrid Grid.Row="2" Columns="3" Margin="0,0,0,20">
+                <Border BorderBrush="#FFD700" BorderThickness="2" CornerRadius="8" Margin="6" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="Min Cell Temp"
+                                   Foreground="White"
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding MinCellTemp, StringFormat={}{0:F1} °C}"
+                                   Foreground="#FFD700"
+                                   FontSize="30"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <Border BorderBrush="#FFD700" BorderThickness="2" CornerRadius="8" Margin="6" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="Avg Cell Temp"
+                                   Foreground="White"
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding AvgCellTemp, StringFormat={}{0:F1} °C}"
+                                   Foreground="#FFD700"
+                                   FontSize="30"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <Border BorderBrush="#FFD700" BorderThickness="2" CornerRadius="8" Margin="6" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="Max Cell Temp"
+                                   Foreground="White"
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding MaxCellTemp, StringFormat={}{0:F1} °C}"
+                                   Foreground="#FFD700"
+                                   FontSize="30"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Placeholder lower section -->
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" BorderBrush="#FFD700" BorderThickness="1" CornerRadius="8" Margin="6" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="Accumulator Summary"
+                                   Foreground="#FFD700"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding AccumulatorStatus}"
+                                   Foreground="White"
+                                   FontSize="18"/>
+                        <TextBlock Text="{Binding HottestCellInfo}"
+                                   Foreground="White"
+                                   FontSize="18"
+                                   Margin="0,6,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" BorderBrush="#FFD700" BorderThickness="1" CornerRadius="8" Margin="6" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="Temperature / Module Placeholder"
+                                   Foreground="#FFD700"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock Text="Module table or a heatmap???"
+                                   Foreground="White"
+                                   FontSize="18"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</Page>

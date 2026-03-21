@@ -1,15 +1,7 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using System.Collections.Generic;
 using Peak.Can.Basic;
+using WPF_CAN_Tool.Pages;
 
 namespace WPF_CAN_Tool
 {
@@ -26,7 +18,9 @@ namespace WPF_CAN_Tool
 
         private bool wired = false; // Set to true for Peak CAN device, false for datalogger
 
-        private PeakCanReceiver? _receiver;
+        private ICanReceiver? _receiver;
+
+        private CarStateViewModel _carState = new CarStateViewModel();
 
         public MainWindow()
         {
@@ -50,6 +44,33 @@ namespace WPF_CAN_Tool
             {
                 ConnectToDatalogger();
             }
+
+            MainFrame.Navigate(new LvOverviewPage(_carState));
+        }
+
+        private void LvOverview_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new LvOverviewPage(_carState));
+        }
+
+        private void Pedals_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new PedalsPage(_carState));
+        }
+
+        private void Sdc_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new SdcPage(_carState));
+        }
+
+        private void TsOverview_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new TsOverviewPage(_carState));
+        }
+
+        private void Wheelspeeds_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new WheelspeedsPage(_carState));
         }
 
         private void ConnectToPeakDevice()
@@ -109,3 +130,4 @@ namespace WPF_CAN_Tool
             base.OnClosed(e);
         }
     }
+}

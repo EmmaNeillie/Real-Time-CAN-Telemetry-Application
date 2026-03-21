@@ -1,0 +1,203 @@
+﻿<Page x:Class="WPF_CAN_Tool.Pages.SdcPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="SDC"
+      Background="Black">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Text="SDC"
+                       Foreground="#FFD700"
+                       FontSize="34"
+                       FontWeight="Bold"
+                       Margin="0,0,0,20"/>
+
+            <Border Grid.Row="1" BorderBrush="#FFD700" BorderThickness="2" CornerRadius="8" Padding="12" Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock Text="Safety Dataflow Overview"
+                               Foreground="White"
+                               FontSize="22"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Green = high / true / OK, Red = low / false / fault"
+                               Foreground="White"
+                               FontSize="14"
+                               HorizontalAlignment="Center"
+                               Margin="0,6,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Grid.Row="2" HorizontalAlignment="Center">
+
+                <WrapPanel HorizontalAlignment="Center" Margin="0,20,0,20">
+                    <!-- E-Stop -->
+                    <Border Width="130" Height="70" Margin="8" CornerRadius="8">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding EstopOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="E-Stop"
+                                   Foreground="Black"
+                                   FontWeight="Bold"
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+
+                    <Rectangle Width="40" Height="4" Fill="White" VerticalAlignment="Center"/>
+
+                    <!-- IMD -->
+                    <Border Width="130" Height="70" Margin="8" CornerRadius="8">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ImdOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="IMD"
+                                   Foreground="Black"
+                                   FontWeight="Bold"
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+
+                    <Rectangle Width="40" Height="4" Fill="White" VerticalAlignment="Center"/>
+
+                    <!-- BMS -->
+                    <Border Width="130" Height="70" Margin="8" CornerRadius="8">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding BmsOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="BMS"
+                                   Foreground="Black"
+                                   FontWeight="Bold"
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+
+                    <Rectangle Width="40" Height="4" Fill="White" VerticalAlignment="Center"/>
+
+                    <!-- AMS -->
+                    <Border Width="130" Height="70" Margin="8" CornerRadius="8">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding AmsOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="AMS"
+                                   Foreground="Black"
+                                   FontWeight="Bold"
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                </WrapPanel>
+
+                <WrapPanel HorizontalAlignment="Center" Margin="0,20,0,20">
+                    <!-- Inertia -->
+                    <Border Width="160" Height="70" Margin="8" CornerRadius="8">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding InertiaOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="Inertia Switch"
+                                   Foreground="Black"
+                                   FontWeight="Bold"
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+
+                    <Rectangle Width="40" Height="4" Fill="White" VerticalAlignment="Center"/>
+
+                    <!-- Brake overtravel -->
+                    <Border Width="190" Height="70" Margin="8" CornerRadius="8">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding BrakeOvertravelOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="Brake Overtravel"
+                                   Foreground="Black"
+                                   FontWeight="Bold"
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+
+                    <Rectangle Width="40" Height="4" Fill="White" VerticalAlignment="Center"/>
+
+                    <!-- Main output -->
+                    <Border Width="180" Height="70" Margin="8" CornerRadius="8">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding EstopOk}" Value="True"/>
+                                            <Condition Binding="{Binding ImdOk}" Value="True"/>
+                                            <Condition Binding="{Binding BmsOk}" Value="True"/>
+                                            <Condition Binding="{Binding AmsOk}" Value="True"/>
+                                            <Condition Binding="{Binding InertiaOk}" Value="True"/>
+                                            <Condition Binding="{Binding BrakeOvertravelOk}" Value="True"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="SDC Output"
+                                   Foreground="Black"
+                                   FontWeight="Bold"
+                                   FontSize="20"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                </WrapPanel>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

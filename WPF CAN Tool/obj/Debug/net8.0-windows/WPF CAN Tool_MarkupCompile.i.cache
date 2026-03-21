@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Users\emman\OneDrive\Documents\GitHub\Real-Time-CAN-Telemetry-Application\WPF CAN Tool\App.xaml
-11407045341
+67626692
 
-9-1228048782
+151209923486
 198-1831388575
-MainWindow.xaml;
+LvOverviewPage.xaml;MainWindow.xaml;PedalsPage.xaml;SdcPage.xaml;TsOverviewPage.xaml;WheelspeedsPage.xaml;
 
 False
 
