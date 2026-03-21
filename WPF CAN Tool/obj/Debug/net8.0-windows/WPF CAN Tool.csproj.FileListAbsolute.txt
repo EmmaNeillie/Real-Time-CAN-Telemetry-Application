@@ -1,0 +1,20 @@
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\obj\Debug\net8.0-windows\MainWindow.g.cs
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\obj\Debug\net8.0-windows\App.g.cs
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\obj\Debug\net8.0-windows\WPF CAN Tool_MarkupCompile.cache
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\obj\Debug\net8.0-windows\WPF CAN Tool_MarkupCompile.lref
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\bin\Debug\net8.0-windows\WPF CAN Tool.exe
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\bin\Debug\net8.0-windows\WPF CAN Tool.deps.json
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\bin\Debug\net8.0-windows\WPF CAN Tool.runtimeconfig.json
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\bin\Debug\net8.0-windows\WPF CAN Tool.dll
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\bin\Debug\net8.0-windows\WPF CAN Tool.pdb
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\obj\Debug\net8.0-windows\MainWindow.baml
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\obj\Debug\net8.0-windows\WPF CAN Tool.g.resources
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\obj\Debug\net8.0-windows\WPF CAN Tool.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\obj\Debug\net8.0-windows\WPF CAN Tool.AssemblyInfoInputs.cache
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\obj\Debug\net8.0-windows\WPF CAN Tool.AssemblyInfo.cs
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\obj\Debug\net8.0-windows\WPF CAN Tool.csproj.CoreCompileInputs.cache
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\obj\Debug\net8.0-windows\WPF CAN Tool.dll
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\obj\Debug\net8.0-windows\refint\WPF CAN Tool.dll
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\obj\Debug\net8.0-windows\WPF CAN Tool.pdb
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\obj\Debug\net8.0-windows\WPF CAN Tool.genruntimeconfig.cache
+C:\Users\emman\source\repos\WPF CAN Tool\WPF CAN Tool\obj\Debug\net8.0-windows\ref\WPF CAN Tool.dll
