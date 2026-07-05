@@ -20,11 +20,24 @@ namespace WPF_CAN_Tool.Models
                 return decodedSignals;
 
             var message = _dbcMessages[frame.Id];
+            double? multiplexerValue = null;
+            var multiplexerSignal = message.Signals.Find(signal => signal.IsMultiplexer);
+
+            if (multiplexerSignal != null)
+            {
+                multiplexerValue = ExtractSignalValue(frame.Data, multiplexerSignal);
+            }
 
             foreach (var signal in message.Signals)
             {
                 try
                 {
+                    if (signal.MultiplexerValue.HasValue &&
+                        (!multiplexerValue.HasValue || (int)multiplexerValue.Value != signal.MultiplexerValue.Value))
+                    {
+                        continue;
+                    }
+
                     double value = ExtractSignalValue(frame.Data, signal);
                     decodedSignals[signal.Name] = value;
                 }

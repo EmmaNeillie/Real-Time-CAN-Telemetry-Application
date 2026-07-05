@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using Peak.Can.Basic;
 
@@ -27,7 +28,7 @@ namespace WPF_CAN_Tool
 
         private readonly ushort _pcanHandle;
         private Thread? _readThread;
-        private bool _readingActive;
+        private volatile bool _readingActive;
 
         public PeakCanReceiver(ushort pcanHandle)
         {
@@ -36,9 +37,35 @@ namespace WPF_CAN_Tool
 
         public bool Start()
         {
-            var status = PCANBasic.Initialize(_pcanHandle, TPCANBaudrate.PCAN_BAUD_500K);
-            if (status != TPCANStatus.PCAN_ERROR_OK)
+            TPCANStatus status;
+
+            try
+            {
+                status = PCANBasic.Initialize(_pcanHandle, TPCANBaudrate.PCAN_BAUD_500K);
+            }
+            catch (DllNotFoundException ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"PCANBasic.dll not found or not loadable: {ex.Message}");
                 return false;
+            }
+            catch (BadImageFormatException ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"PCANBasic.dll architecture mismatch: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"PCAN init exception: {ex.Message}");
+                return false;
+            }
+
+            if (status != TPCANStatus.PCAN_ERROR_OK)
+            {
+                System.Diagnostics.Debug.WriteLine($"PCAN init failed: {FormatPcanError(status)}");
+                return false;
+            }
+
+            PCANBasic.Reset(_pcanHandle);
 
             _readingActive = true;
             _readThread = new Thread(ReadLoop) { IsBackground = true };
@@ -50,18 +77,20 @@ namespace WPF_CAN_Tool
         {
             while (_readingActive)
             {
-                TPCANMsg canMsg;
-                TPCANTimestamp canTimestamp;
-                var status = PCANBasic.Read(_pcanHandle, out canMsg, out canTimestamp);
+                var status = PCANBasic.Read(_pcanHandle, out TPCANMsg canMsg, out TPCANTimestamp canTimestamp);
 
                 if (status == TPCANStatus.PCAN_ERROR_OK)
                 {
+                    byte dlc = Math.Min(canMsg.LEN, (byte)canMsg.DATA.Length);
+                    bool isExtended = (canMsg.MSGTYPE & TPCANMessageType.PCAN_MESSAGE_EXTENDED) != 0;
+                    uint id = isExtended ? (canMsg.ID | 0x80000000u) : canMsg.ID;
+
                     var frame = new CanFrame
                     {
-                        Id = canMsg.ID,
-                        IsExtended = (canMsg.MSGTYPE & TPCANMessageType.PCAN_MESSAGE_EXTENDED) != 0,
-                        Dlc = canMsg.LEN,
-                        Data = canMsg.DATA.Take(canMsg.LEN).ToArray(),
+                        Id = id,
+                        IsExtended = isExtended,
+                        Dlc = dlc,
+                        Data = canMsg.DATA.Take(dlc).ToArray(),
                         Timestamp = DateTime.Now
                     };
 
@@ -69,7 +98,7 @@ namespace WPF_CAN_Tool
                 }
                 else if (status != TPCANStatus.PCAN_ERROR_QRCVEMPTY)
                 {
-                    // optional logging
+                    System.Diagnostics.Debug.WriteLine($"PCAN read error: {FormatPcanError(status)}");
                 }
 
                 Thread.Sleep(5);
@@ -84,5 +113,15 @@ namespace WPF_CAN_Tool
         }
 
         public void Dispose() => Stop();
+
+        private static string FormatPcanError(TPCANStatus status)
+        {
+            var buffer = new StringBuilder(256);
+            var textStatus = PCANBasic.GetErrorText(status, 0x09, buffer);
+
+            return textStatus == TPCANStatus.PCAN_ERROR_OK
+                ? $"{status} - {buffer}"
+                : status.ToString();
+        }
     }
 }

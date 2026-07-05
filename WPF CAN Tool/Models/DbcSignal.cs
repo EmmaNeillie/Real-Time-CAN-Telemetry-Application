@@ -12,5 +12,7 @@ namespace WPF_CAN_Tool.Models
         public double MinValue { get; set; }
         public double MaxValue { get; set; }
         public string Unit { get; set; } = string.Empty;
+        public bool IsMultiplexer { get; set; }
+        public int? MultiplexerValue { get; set; }
     }
 }

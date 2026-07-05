@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Content Include="CAN_Config.dbc" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="PCANBasic.dll" CopyToOutputDirectory="PreserveNewest" />
     <Compile Remove="obj\**;bin\**" />
     <EmbeddedResource Remove="obj\**;bin\**" />
     <None Remove="obj\**;bin\**" />

@@ -1,0 +1,134 @@
+VERSION ""
+
+
+NS_ :
+    NS_DESC_
+    CM_
+    BA_DEF_
+    BA_
+    VAL_
+    CAT_DEF_
+    CAT_
+    FILTER
+    BA_DEF_DEF_
+    EV_DATA_
+    ENVVAR_DATA_
+    SGTYPE_
+    SGTYPE_VAL_
+    BA_DEF_SGTYPE_
+    BA_SGTYPE_
+    SIG_TYPE_REF_
+    VAL_TABLE_
+    SIG_GROUP_
+    SIG_VALTYPE_
+    SIGTYPE_VALTYPE_
+    BO_TX_BU_
+    BA_DEF_REL_
+    BA_REL_
+    BA_DEF_DEF_REL_
+    BU_SG_REL_
+    BU_EV_REL_
+    BU_BO_REL_
+    SG_MUL_VAL_
+
+BS_: 
+BU_: 0x_6__LVBox 0x_7__Inverter 0x_1__BAPPS 0x_3__Wheelspeeds 0x_2__Dash 0x_4__Accu 0x_0__SDC_Nodes 
+BO_ 96 Inverter_Command: 3 0x_6__LVBox
+   SG_ Inverter_Command_Mux M : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+   SG_ Torque_Command m144 : 8|16@1- (1,0) [-32768|32767] "/32767" Vector__XXX
+   SG_ Speed_Command m49 : 8|16@1- (0.183111,0) [-6000.18|6000] "rpm" Vector__XXX
+   SG_ Read_REG m61 : 8|8@1- (1,0) [0|255] "" Vector__XXX
+   SG_ Read_Int m61 : 16|8@1- (1,0) [0|255] "ms" Vector__XXX
+
+BO_ 272 Accelerator_Percentage: 2 0x_1__BAPPS
+   SG_ Accelerator_Percentage : 0|16@1+ (0.00305185,0) [0|65535] "" Vector__XXX
+
+BO_ 1811 Brake_Percentage: 1 0x_1__BAPPS
+   SG_ Brake_Percentage : 0|8@1+ (0.392157,0) [0|100] "%" Vector__XXX
+   SG_ BOTS_Status : 0|1@0+ (1,0) [0|1] "" Vector__XXX
+   SG_ APPS_Status : 1|1@0+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 816 Wheelspeed: 4 0x_3__Wheelspeeds
+   SG_ Wheelspeed_Mux M : 0|8@1+ (1,0) [0|3] "" Vector__XXX
+   SG_ FL_Wheelspeed m0 : 8|16@1- (1,0) [-32768|32767] "" Vector__XXX
+   SG_ FR_Wheelspeed m1 : 8|16@1- (1,0) [-32768|32767] "" Vector__XXX
+   SG_ RL_Wheelspeed m2 : 8|16@1- (1,0) [-32768|32767] "" Vector__XXX
+   SG_ RR_Wheelspeed m3 : 8|16@1- (1,0) [-32768|32767] "" Vector__XXX
+   SG_ FL_BrakeTemp m0 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+   SG_ FR_BrakeTemp m1 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+   SG_ RL_BrakeTemp m2 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+   SG_ RR_BrakeTemp m3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 880 Inverter_Return: 3 0x_7__Inverter
+   SG_ Inverter_Return_Mux M : 0|8@1+ (1,0) [0|254] "" Vector__XXX
+   SG_ N_actual m48 : 8|16@1- (0.183111,0) [-6000.18|6000] "rpm" Vector__XXX
+
+BO_ 2147484192 Energy_Setting: 1 0x_2__Dash
+   SG_ Energy_Setting_Request : 0|2@1+ (1,0) [0|3] "" Vector__XXX
+
+BO_ 2147485200 BAPPS_Calibration: 1 0x_1__BAPPS
+   SG_ BAPPS_Calibration_Mux M : 0|2@1+ (1,0) [0|4] "" Vector__XXX
+   SG_ APPS_Calibration_Selector m0 : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+   SG_ BPPS_Calibration_Selector m1 : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+   SG_ APPS_Calibration_Return m2 : 2|2@1+ (1,0) [0|3] "" Vector__XXX
+   SG_ BPPS_Calibration_Return m3 : 2|2@1+ (1,0) [0|3] "" Vector__XXX
+   SG_ BAPPS_Calibration_Result : 4|4@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 1792 SDC_Node_Failed: 1 0x_0__SDC_Nodes
+   SG_ SDC_Node_Number M : 0|8@1+ (1,0) [0|127] "" Vector__XXX
+
+CM_ BU_ 0x_0__SDC_Nodes "All SDC node data";
+CM_ BO_ 96 "Inverter Command";
+CM_ SG_ 96 Inverter_Command_Mux "Inverter_Multiplexer";
+CM_ SG_ 96 Torque_Command "Inverter_torque_command";
+CM_ SG_ 96 Speed_Command "Inverter_speed_command";
+CM_ SG_ 96 Read_REG "Inverter_read_ID";
+CM_ SG_ 96 Read_Int "Inverter_read_interval";
+CM_ BO_ 272 "Accelerator percentage (ratio of 65535)";
+CM_ SG_ 272 Accelerator_Percentage "16_bit_unsigned";
+CM_ BO_ 1811 "SDC Status between BOTS and APPS, and APPS to LHS SDB";
+CM_ SG_ 1811 Brake_Percentage "8_bit_unsigned";
+CM_ SG_ 1811 BOTS_Status "bool";
+CM_ SG_ 1811 APPS_Status "bool";
+CM_ BO_ 816 "For all 4 wheel speeds, muxed";
+CM_ SG_ 816 Wheelspeed_Mux "0_to_3_for_each_wheel";
+CM_ SG_ 816 FL_Wheelspeed "Front_left_wheelspeed_16_bit_signed";
+CM_ SG_ 816 FR_Wheelspeed "Front_right_wheelspeed_16_bit_signed";
+CM_ SG_ 816 RL_Wheelspeed "Rear_left_wheelspeed_16_bit_signed";
+CM_ SG_ 816 RR_Wheelspeed "Rear_right_wheelspeed_16_bit_signed";
+CM_ SG_ 816 FL_BrakeTemp "Front_left_braketemp_8_bit_unsigned";
+CM_ SG_ 816 FR_BrakeTemp "Front_right_braketemp_8_bit_unsigned";
+CM_ SG_ 816 RL_BrakeTemp "Rear_left_braketemp_8_bit_unsigned";
+CM_ SG_ 816 RR_BrakeTemp "Rear_right_braketemp_8_bit_unsigned";
+CM_ BO_ 880 "Return message from inverter following info request";
+CM_ SG_ 880 N_actual "Actual_Motor_Rotation_Speed";
+CM_ BO_ 2147484192 "Energy rotary knob setting";
+CM_ SG_ 2147484192 Energy_Setting_Request "Requested_energy_setting";
+BA_DEF_ BO_ "GenMsgBackgroundColor" STRING ;
+BA_DEF_ BO_ "GenMsgForegroundColor" STRING ;
+BA_DEF_ BO_ "matchingcriteria" INT 0 0;
+BA_DEF_ BO_ "filterlabeling" INT 0 0;
+BA_DEF_ BO_ "matchingcriteria" INT 0 0;
+BA_DEF_ BO_ "filterlabeling" INT 0 0;
+BA_DEF_ BO_ "matchingcriteria" INT 0 0;
+BA_DEF_ BO_ "filterlabeling" INT 0 0;
+BA_DEF_DEF_ "GenMsgBackgroundColor" "#ffffff";
+BA_DEF_DEF_ "GenMsgForegroundColor" "#000000";
+BA_DEF_DEF_ "matchingcriteria" 0;
+BA_DEF_DEF_ "filterlabeling" 1;
+BA_ "GenMsgForegroundColor" BO_ 96 "#000000";
+BA_ "GenMsgForegroundColor" BO_ 272 "#000000";
+BA_ "GenMsgForegroundColor" BO_ 1811 "#000000";
+BA_ "GenMsgForegroundColor" BO_ 816 "#000000";
+BA_ "GenMsgForegroundColor" BO_ 880 "#000000";
+BA_ "GenMsgBackgroundColor" BO_ 880 "#00aaff";
+BA_ "GenMsgForegroundColor" BO_ 2147484192 "#000000";
+BA_ "GenMsgForegroundColor" BO_ 2147485200 "#000000";
+BA_ "GenMsgForegroundColor" BO_ 1792 "#000000";
+VAL_ 96 Read_REG 0 "";
+VAL_ 96 Read_Int 0 "";
+VAL_ 2147485200 APPS_Calibration_Selector 0 "Request_APPS_to_record/set_pedal_minimum_position" 1 "Request_APPS_to_record/set_pedal_maximum_position";
+VAL_ 2147485200 BPPS_Calibration_Selector 0 "Request_BPPS_to_record/set_pedal_minimum_position" 1 "Request_BPPS_to_record/set_pedal_maximum_position";
+VAL_ 2147485200 APPS_Calibration_Return 0 "Report/Acknowledge_APPS_record/set_pedal_mimum_position" 1 "Report/Acknowledge_APPS_record/set_pedal_mimum_position" 2 "Report_APPS_calibration_data_validity_(!(min_>_max)_for_each_sensor)" 3 "Report_APPS_calibration_data_save_status";
+VAL_ 2147485200 BPPS_Calibration_Return 0 "Report/Acknowledge_BPPS_record/set_pedal_mimum_position" 1 "Report/Acknowledge_BPPS_record/set_pedal_mimum_position" 2 "Report_BPPS_calibration_data_validity_(!(min_>_max)_for_each_sensor)" 3 "Report_BPPS_calibration_data_save_status";
+VAL_ 2147485200 BAPPS_Calibration_Result 0 "Requests_always_0" 10 "Report_success" 15 "Report_failure";

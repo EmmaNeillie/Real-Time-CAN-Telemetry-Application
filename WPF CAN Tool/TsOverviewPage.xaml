@@ -115,6 +115,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.Column="0" BorderBrush="#FFD700" BorderThickness="1" CornerRadius="8" Margin="6" Padding="12">
@@ -136,15 +137,40 @@
 
                 <Border Grid.Column="1" BorderBrush="#FFD700" BorderThickness="1" CornerRadius="8" Margin="6" Padding="12">
                     <StackPanel>
-                        <TextBlock Text="Temperature / Module Placeholder"
+                        <TextBlock Text="Inverter Command"
                                    Foreground="#FFD700"
                                    FontSize="20"
                                    FontWeight="Bold"
                                    Margin="0,0,0,10"/>
-                        <TextBlock Text="Module table or a heatmap???"
+                        <TextBlock Text="{Binding TorqueCommand, StringFormat=Torque: {0:F0}}"
+                                   Foreground="White"
+                                   FontSize="18"/>
+                        <TextBlock Text="{Binding SpeedCommand, StringFormat=Speed Cmd: {0:F0} rpm}"
                                    Foreground="White"
                                    FontSize="18"
-                                   TextWrapping="Wrap"/>
+                                   Margin="0,6,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" BorderBrush="#FFD700" BorderThickness="1" CornerRadius="8" Margin="6" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="Cell Heat Map"
+                                   Foreground="#FFD700"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock Text="TBD"
+                                   Foreground="White"
+                                   FontSize="28"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,14,0,4"/>
+                        <TextBlock Text="Waiting for module-level CAN details."
+                                   Foreground="White"
+                                   FontSize="16"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"/>
                     </StackPanel>
                 </Border>
             </Grid>

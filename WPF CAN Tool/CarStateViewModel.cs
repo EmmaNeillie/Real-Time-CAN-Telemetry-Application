@@ -3,6 +3,8 @@ using System.ComponentModel;
 
 public class CarStateViewModel : INotifyPropertyChanged
 {
+    private const double PedalMaxAngle = 40.0;
+
     public event PropertyChangedEventHandler? PropertyChanged;
     private void OnPropertyChanged(string name) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -11,14 +13,24 @@ public class CarStateViewModel : INotifyPropertyChanged
     public double AcceleratorPercentage
     {
         get => _acceleratorPercentage;
-        set { _acceleratorPercentage = value; OnPropertyChanged(nameof(AcceleratorPercentage)); }
+        set
+        {
+            _acceleratorPercentage = value;
+            AcceleratorAngle = PercentageToPedalAngle(value);
+            OnPropertyChanged(nameof(AcceleratorPercentage));
+        }
     }
 
     private double _brakePercentage;
     public double BrakePercentage
     {
         get => _brakePercentage;
-        set { _brakePercentage = value; OnPropertyChanged(nameof(BrakePercentage)); }
+        set
+        {
+            _brakePercentage = value;
+            BrakeAngle = PercentageToPedalAngle(value);
+            OnPropertyChanged(nameof(BrakePercentage));
+        }
     }
 
     private double _acceleratorAngle;
@@ -56,25 +68,61 @@ public class CarStateViewModel : INotifyPropertyChanged
         set { _motorRpm = value; OnPropertyChanged(nameof(MotorRpm)); }
     }
 
+    private double _torqueCommand;
+    public double TorqueCommand
+    {
+        get => _torqueCommand;
+        set { _torqueCommand = value; OnPropertyChanged(nameof(TorqueCommand)); }
+    }
+
+    private double _speedCommand;
+    public double SpeedCommand
+    {
+        get => _speedCommand;
+        set { _speedCommand = value; OnPropertyChanged(nameof(SpeedCommand)); }
+    }
+
     private double _accumulatorVoltage;
     public double AccumulatorVoltage
     {
         get => _accumulatorVoltage;
-        set { _accumulatorVoltage = value; OnPropertyChanged(nameof(AccumulatorVoltage)); }
+        set
+        {
+            _accumulatorVoltage = value;
+            OnPropertyChanged(nameof(AccumulatorVoltage));
+            OnPropertyChanged(nameof(PackPower));
+            OnPropertyChanged(nameof(AccumulatorStatus));
+        }
     }
 
     private double _accumulatorCurrent;
     public double AccumulatorCurrent
     {
         get => _accumulatorCurrent;
-        set { _accumulatorCurrent = value; OnPropertyChanged(nameof(AccumulatorCurrent)); }
+        set
+        {
+            _accumulatorCurrent = value;
+            OnPropertyChanged(nameof(AccumulatorCurrent));
+            OnPropertyChanged(nameof(PackPower));
+            OnPropertyChanged(nameof(AccumulatorStatus));
+        }
     }
+
+    public double PackPower => AccumulatorVoltage * AccumulatorCurrent / 1000.0;
+    public string AccumulatorStatus => AccumulatorVoltage > 0
+        ? $"Pack active - {AccumulatorVoltage:F1} V, {AccumulatorCurrent:F1} A"
+        : "Waiting for accumulator data";
 
     private double _maxCellTemp;
     public double MaxCellTemp
     {
         get => _maxCellTemp;
-        set { _maxCellTemp = value; OnPropertyChanged(nameof(MaxCellTemp)); }
+        set
+        {
+            _maxCellTemp = value;
+            OnPropertyChanged(nameof(MaxCellTemp));
+            OnPropertyChanged(nameof(HottestCellInfo));
+        }
     }
 
     private double _minCellTemp;
@@ -90,6 +138,22 @@ public class CarStateViewModel : INotifyPropertyChanged
         get => _avgCellTemp;
         set { _avgCellTemp = value; OnPropertyChanged(nameof(AvgCellTemp)); }
     }
+
+    private int _hottestCellId;
+    public int HottestCellId
+    {
+        get => _hottestCellId;
+        set
+        {
+            _hottestCellId = value;
+            OnPropertyChanged(nameof(HottestCellId));
+            OnPropertyChanged(nameof(HottestCellInfo));
+        }
+    }
+
+    public string HottestCellInfo => MaxCellTemp > 0
+        ? $"Hottest cell: #{HottestCellId} at {MaxCellTemp:F1} °C"
+        : "Waiting for cell temperature data";
 
     // Wheel speeds
     private double _flWheelspeed;
@@ -198,5 +262,116 @@ public class CarStateViewModel : INotifyPropertyChanged
     {
         get => _amsOk;
         set { _amsOk = value; OnPropertyChanged(nameof(AmsOk)); }
+    }
+
+    private bool _lvmsOk;
+    public bool LvmsOk
+    {
+        get => _lvmsOk;
+        set { _lvmsOk = value; OnPropertyChanged(nameof(LvmsOk)); }
+    }
+
+    private bool _bspdOk;
+    public bool BspdOk
+    {
+        get => _bspdOk;
+        set { _bspdOk = value; OnPropertyChanged(nameof(BspdOk)); }
+    }
+
+    private bool _killSwitchOk;
+    public bool KillSwitchOk
+    {
+        get => _killSwitchOk;
+        set { _killSwitchOk = value; OnPropertyChanged(nameof(KillSwitchOk)); }
+    }
+
+    private bool _botsOk;
+    public bool BotsOk
+    {
+        get => _botsOk;
+        set { _botsOk = value; OnPropertyChanged(nameof(BotsOk)); }
+    }
+
+    private bool _appsOk;
+    public bool AppsOk
+    {
+        get => _appsOk;
+        set { _appsOk = value; OnPropertyChanged(nameof(AppsOk)); }
+    }
+
+    private bool _lhsSbOk;
+    public bool LhsSbOk
+    {
+        get => _lhsSbOk;
+        set { _lhsSbOk = value; OnPropertyChanged(nameof(LhsSbOk)); }
+    }
+
+    private bool _rhsSbOk;
+    public bool RhsSbOk
+    {
+        get => _rhsSbOk;
+        set { _rhsSbOk = value; OnPropertyChanged(nameof(RhsSbOk)); }
+    }
+
+    private bool _latchboardOk;
+    public bool LatchboardOk
+    {
+        get => _latchboardOk;
+        set { _latchboardOk = value; OnPropertyChanged(nameof(LatchboardOk)); }
+    }
+
+    private bool _dcOk;
+    public bool DcOk
+    {
+        get => _dcOk;
+        set { _dcOk = value; OnPropertyChanged(nameof(DcOk)); }
+    }
+
+    private bool _hvdOk;
+    public bool HvdOk
+    {
+        get => _hvdOk;
+        set { _hvdOk = value; OnPropertyChanged(nameof(HvdOk)); }
+    }
+
+    private bool _mcOk;
+    public bool McOk
+    {
+        get => _mcOk;
+        set { _mcOk = value; OnPropertyChanged(nameof(McOk)); }
+    }
+
+    private bool _selfLatchOk;
+    public bool SelfLatchOk
+    {
+        get => _selfLatchOk;
+        set { _selfLatchOk = value; OnPropertyChanged(nameof(SelfLatchOk)); }
+    }
+
+    private bool _tsalSwitchOk;
+    public bool TsalSwitchOk
+    {
+        get => _tsalSwitchOk;
+        set { _tsalSwitchOk = value; OnPropertyChanged(nameof(TsalSwitchOk)); }
+    }
+
+    private bool _tsmsOk;
+    public bool TsmsOk
+    {
+        get => _tsmsOk;
+        set { _tsmsOk = value; OnPropertyChanged(nameof(TsmsOk)); }
+    }
+
+    private bool _prechargeOk;
+    public bool PrechargeOk
+    {
+        get => _prechargeOk;
+        set { _prechargeOk = value; OnPropertyChanged(nameof(PrechargeOk)); }
+    }
+
+    private static double PercentageToPedalAngle(double percentage)
+    {
+        double clamped = Math.Max(0, Math.Min(100, percentage));
+        return clamped / 100.0 * PedalMaxAngle;
     }
 }

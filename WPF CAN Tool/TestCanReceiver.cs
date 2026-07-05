@@ -26,9 +26,22 @@ namespace WPF_CAN_Tool
         private double _wheelSpeedFR = 0;
         private double _wheelSpeedRL = 0;
         private double _wheelSpeedRR = 0;
+        private double _vehicleSpeed = 0;
+        private double _trackPosition = 0;
+        private double _lastCycleTime = 0;
         private double _motorRpm = 0;
+        private double _flBrakeTemp = 42;
+        private double _frBrakeTemp = 42;
+        private double _rlBrakeTemp = 40;
+        private double _rrBrakeTemp = 40;
         private bool _appsStatus = true;
         private bool _botsStatus = true;
+        private double _accumulatorVoltage = 0;
+        private double _accumulatorCurrent = 0;
+        private double _minCellTemp = 0;
+        private double _avgCellTemp = 0;
+        private double _maxCellTemp = 0;
+        private int _hottestCellId = 0;
         private int _energySetting = 0;
         private short _torqueCommand = 0;
         private short _speedCommand = 0;
@@ -82,36 +95,30 @@ namespace WPF_CAN_Tool
 
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    // Generate realistic test data with sine waves and random variations
                     double time = (DateTime.Now - startTime).TotalSeconds;
+                    UpdateTrackCycle(time);
 
-                    // Accelerator: sine wave 0-100%
-                    _acceleratorValue = 50 + 50 * Math.Sin(time * 0.5);
                     SendAcceleratorFrame();
                     await Task.Delay(50, cancellationToken);
 
-                    // Brake: sine wave 0-100%
-                    _brakeValue = 30 + 30 * Math.Sin(time * 0.3 + 1.5);
                     SendBrakeFrame();
                     await Task.Delay(50, cancellationToken);
 
-                    // Status: toggle every 5 seconds
-                    _appsStatus = (int)(time / 5) % 2 == 0;
-                    _botsStatus = (int)(time / 5) % 2 == 0;
+                    _appsStatus = true;
+                    _botsStatus = true;
                     SendStatusFrame();
                     await Task.Delay(50, cancellationToken);
 
-                    // Wheel speeds: varying values (all 4 wheels)
-                    _wheelSpeedFL = 25 + 20 * Math.Sin(time * 0.7);
-                    _wheelSpeedFR = 26 + 19 * Math.Sin(time * 0.72);
-                    _wheelSpeedRL = 24 + 21 * Math.Sin(time * 0.68);
-                    _wheelSpeedRR = 25 + 20 * Math.Sin(time * 0.75);
+                    SendSdcNodeFailedFrame(time);
+                    await Task.Delay(50, cancellationToken);
+
                     SendWheelspeedFrames();
                     await Task.Delay(50, cancellationToken);
 
-                    // Motor RPM: varying values
-                    _motorRpm = 3000 + 2000 * Math.Sin(time * 0.4);
                     SendMotorRpmFrame();
+                    await Task.Delay(50, cancellationToken);
+
+                    SendTsPlaceholderFrame();
                     await Task.Delay(50, cancellationToken);
 
                     // Energy setting: cycle through 0-3
@@ -119,9 +126,8 @@ namespace WPF_CAN_Tool
                     SendEnergySettingFrame();
                     await Task.Delay(50, cancellationToken);
 
-                    // Inverter commands: varying torque and speed
-                    _torqueCommand = (short)(15000 * Math.Sin(time * 0.4));
-                    _speedCommand = (short)(5000 * Math.Sin(time * 0.5 + 1.0));
+                    _torqueCommand = (short)Math.Max(short.MinValue, Math.Min(short.MaxValue, _acceleratorValue / 100.0 * 18000 - _brakeValue / 100.0 * 3500));
+                    _speedCommand = (short)Math.Max(short.MinValue, Math.Min(short.MaxValue, _motorRpm));
                     SendInverterCommandFrame();
                     await Task.Delay(50, cancellationToken);
 
@@ -219,7 +225,7 @@ namespace WPF_CAN_Tool
                     0,  // Mux = 0 for FL
                     (byte)(flRaw & 0xFF),
                     (byte)((flRaw >> 8) & 0xFF),
-                    60, // FL Brake temp
+                    (byte)Math.Max(0, Math.Min(255, _flBrakeTemp)),
                     0, 0, 0, 0
                 },
                 Dlc = 4
@@ -237,7 +243,7 @@ namespace WPF_CAN_Tool
                     1,  // Mux = 1 for FR
                     (byte)(frRaw & 0xFF),
                     (byte)((frRaw >> 8) & 0xFF),
-                    58, // FR Brake temp
+                    (byte)Math.Max(0, Math.Min(255, _frBrakeTemp)),
                     0, 0, 0, 0
                 },
                 Dlc = 4
@@ -255,7 +261,7 @@ namespace WPF_CAN_Tool
                     2,  // Mux = 2 for RL
                     (byte)(rlRaw & 0xFF),
                     (byte)((rlRaw >> 8) & 0xFF),
-                    62, // RL Brake temp
+                    (byte)Math.Max(0, Math.Min(255, _rlBrakeTemp)),
                     0, 0, 0, 0
                 },
                 Dlc = 4
@@ -273,7 +279,7 @@ namespace WPF_CAN_Tool
                     3,  // Mux = 3 for RR
                     (byte)(rrRaw & 0xFF),
                     (byte)((rrRaw >> 8) & 0xFF),
-                    59, // RR Brake temp
+                    (byte)Math.Max(0, Math.Min(255, _rrBrakeTemp)),
                     0, 0, 0, 0
                 },
                 Dlc = 4
@@ -377,6 +383,148 @@ namespace WPF_CAN_Tool
         {
             // Already handled in SendMotorRpmFrame() for mux value 48
             // This could be extended to send other mux values if needed
+        }
+
+        private void UpdateTrackCycle(double time)
+        {
+            double dt = _lastCycleTime > 0 ? Math.Min(1.0, Math.Max(0.05, time - _lastCycleTime)) : 0.45;
+            _lastCycleTime = time;
+
+            const double trackLength = 650.0;
+            _trackPosition = (_trackPosition + (_vehicleSpeed / 3.6) * dt) % trackLength;
+
+            double targetSpeed = GetTargetSpeedForTrackPosition(_trackPosition);
+            double turnBias = GetTurnBiasForTrackPosition(_trackPosition);
+            double speedError = targetSpeed - _vehicleSpeed;
+
+            if (speedError > 3)
+            {
+                _acceleratorValue = Math.Min(82, 18 + speedError * 2.3);
+                _brakeValue = 0;
+            }
+            else if (speedError < -3)
+            {
+                _acceleratorValue = 0;
+                _brakeValue = Math.Min(78, 12 + -speedError * 2.8);
+            }
+            else
+            {
+                _acceleratorValue = turnBias == 0 ? 16 : 8;
+                _brakeValue = 0;
+            }
+
+            double drag = 0.15 + _vehicleSpeed * _vehicleSpeed * 0.00025;
+            double acceleration = (_acceleratorValue / 100.0 * 3.2) - (_brakeValue / 100.0 * 6.0) - drag;
+            _vehicleSpeed = Math.Max(0, Math.Min(92, _vehicleSpeed + acceleration * dt * 3.6));
+
+            double turnDelta = turnBias * Math.Min(3.5, _vehicleSpeed / 22.0);
+            double noise = Math.Sin(time * 3.1) * 0.15;
+            double brakeFrontDrop = _brakeValue / 100.0 * 0.8;
+            double driveRearSlip = _acceleratorValue / 100.0 * 1.0;
+
+            _wheelSpeedFL = Math.Max(0, _vehicleSpeed - turnDelta - brakeFrontDrop + noise);
+            _wheelSpeedFR = Math.Max(0, _vehicleSpeed + turnDelta - brakeFrontDrop - noise);
+            _wheelSpeedRL = Math.Max(0, _vehicleSpeed - turnDelta * 0.85 + driveRearSlip);
+            _wheelSpeedRR = Math.Max(0, _vehicleSpeed + turnDelta * 0.85 + driveRearSlip);
+
+            _motorRpm = Math.Max(0, _vehicleSpeed * 92 + _acceleratorValue * 22);
+
+            double driveCurrent = _acceleratorValue / 100.0 * 31.4;
+            double regenCurrent = _brakeValue / 100.0 * -8.0;
+            _accumulatorCurrent = Math.Max(0, driveCurrent + regenCurrent);
+            _accumulatorVoltage = 255 - Math.Max(0, driveCurrent) * 0.18 + Math.Sin(time * 0.12) * 0.8;
+
+            double heatLoad = Math.Max(0, Math.Abs(_accumulatorCurrent) / 31.4);
+            _minCellTemp = 24 + heatLoad * 2 + Math.Sin(time * 0.05);
+            _avgCellTemp = _minCellTemp + 3 + heatLoad * 3;
+            _maxCellTemp = _avgCellTemp + 4 + heatLoad * 4;
+            _hottestCellId = 1 + (int)(time / 6) % 96;
+
+            UpdateBrakeTemps(dt, Math.Abs(turnBias));
+        }
+
+        private static double GetTargetSpeedForTrackPosition(double position)
+        {
+            if (position < 170) return 84;   // start/finish straight
+            if (position < 230) return 42;   // braking into turn 1
+            if (position < 360) return 48;   // long constant-radius corner
+            if (position < 520) return 88;   // back straight
+            if (position < 580) return 32;   // heavy braking into hairpin
+            return 38;                       // hairpin exit
+        }
+
+        private static double GetTurnBiasForTrackPosition(double position)
+        {
+            if (position >= 230 && position < 360) return 1.0;   // left-hand sweeper
+            if (position >= 580 || position < 40) return -1.25;  // right-hand hairpin / final bend
+            return 0.0;
+        }
+
+        private void UpdateBrakeTemps(double dt, double cornerLoad)
+        {
+            double brakeHeat = _brakeValue / 100.0 * 8.0;
+            double rollingHeat = _vehicleSpeed / 100.0 * 0.4 + cornerLoad * 0.25;
+            double cooling = 0.09 * dt;
+
+            _flBrakeTemp = UpdateTemperature(_flBrakeTemp, 38, brakeHeat * 1.2 + rollingHeat, cooling);
+            _frBrakeTemp = UpdateTemperature(_frBrakeTemp, 38, brakeHeat * 1.2 + rollingHeat, cooling);
+            _rlBrakeTemp = UpdateTemperature(_rlBrakeTemp, 36, brakeHeat * 0.75 + rollingHeat, cooling);
+            _rrBrakeTemp = UpdateTemperature(_rrBrakeTemp, 36, brakeHeat * 0.75 + rollingHeat, cooling);
+        }
+
+        private static double UpdateTemperature(double current, double ambient, double heating, double cooling)
+        {
+            return Math.Max(ambient, current + heating * 0.12 - (current - ambient) * cooling);
+        }
+
+        private void SendTsPlaceholderFrame()
+        {
+            ushort voltageRaw = (ushort)Math.Max(0, Math.Min(65535, _accumulatorVoltage / 0.1));
+            short currentRaw = (short)Math.Max(short.MinValue, Math.Min(short.MaxValue, _accumulatorCurrent / 0.1));
+
+            var frame = new CanFrame
+            {
+                Id = GetMessageId("AccumulatorVoltage", MainWindow.TsPlaceholderMessageId),
+                Data = new byte[8]
+                {
+                    (byte)(voltageRaw & 0xFF),
+                    (byte)((voltageRaw >> 8) & 0xFF),
+                    (byte)(currentRaw & 0xFF),
+                    (byte)((currentRaw >> 8) & 0xFF),
+                    (byte)Math.Max(0, Math.Min(255, _minCellTemp)),
+                    (byte)Math.Max(0, Math.Min(255, _avgCellTemp)),
+                    (byte)Math.Max(0, Math.Min(255, _maxCellTemp)),
+                    (byte)Math.Max(0, Math.Min(255, _hottestCellId))
+                },
+                Dlc = 8
+            };
+
+            FrameReceived?.Invoke(frame);
+            System.Diagnostics.Debug.WriteLine($"? ID: 0x{frame.Id:X3} TS Placeholder, Data: {BitConverter.ToString(frame.Data, 0, frame.Dlc)}");
+        }
+
+        private void SendSdcNodeFailedFrame(double time)
+        {
+            int faultWindow = (int)(time % 18);
+            byte failedNode = 127;
+
+            if (faultWindow < 4)
+            {
+                failedNode = (byte)(((int)(time / 18)) % 16);
+            }
+
+            var frame = new CanFrame
+            {
+                Id = GetMessageId("SDC_Node_Number", MainWindow.SdcPlaceholderMessageId),
+                Data = new byte[8]
+                {
+                    failedNode, 0, 0, 0, 0, 0, 0, 0
+                },
+                Dlc = 1
+            };
+
+            FrameReceived?.Invoke(frame);
+            System.Diagnostics.Debug.WriteLine($"? ID: 0x{frame.Id:X3} SDC Failed Node ({failedNode}), Data: {BitConverter.ToString(frame.Data, 0, frame.Dlc)}");
         }
 
         private uint GetMessageId(string signalName, uint fallbackId)

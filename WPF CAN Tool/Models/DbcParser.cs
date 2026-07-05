@@ -179,8 +179,14 @@ namespace WPF_CAN_Tool.Models
                 string namePart = content.Substring(0, colonIndex).Trim();
                 string bitPart = content.Substring(colonIndex + 1).Trim();
 
-                // Extract signal name (remove multiplexer info like "m0")
-                string signalName = Regex.Replace(namePart, @"\s+m\d+$", "").Trim();
+                bool isMultiplexer = Regex.IsMatch(namePart, @"\sM$");
+                var multiplexerMatch = Regex.Match(namePart, @"\sm(\d+)$");
+                int? multiplexerValue = multiplexerMatch.Success
+                    ? int.Parse(multiplexerMatch.Groups[1].Value)
+                    : null;
+
+                // Extract signal name (remove multiplexer info like "M" or "m0")
+                string signalName = Regex.Replace(namePart, @"\s+(M|m\d+)$", "").Trim();
 
                 // Parse bit information: StartBit|Length@ByteOrder+/-
                 var bitMatch = Regex.Match(bitPart, @"(\d+)\|(\d+)@(\d)([\+\-])");
@@ -213,7 +219,9 @@ namespace WPF_CAN_Tool.Models
                     Offset = offset,
                     MinValue = minValue,
                     MaxValue = maxValue,
-                    Unit = unit
+                    Unit = unit,
+                    IsMultiplexer = isMultiplexer,
+                    MultiplexerValue = multiplexerValue
                 };
             }
             catch (Exception ex)

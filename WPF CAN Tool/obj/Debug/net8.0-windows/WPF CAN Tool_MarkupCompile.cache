@@ -1,5 +1,5 @@
 ﻿WPF CAN Tool
-1.0.0.0
+
 
 winexe
 C#
@@ -11,8 +11,8 @@ false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Users\emman\OneDrive\Documents\GitHub\Real-Time-CAN-Telemetry-Application\WPF CAN Tool\App.xaml
 67626692
-1-1181191871
-211748136140
+2-976561257
+19-2062366284
 198-1831388575
 LvOverviewPage.xaml;MainWindow.xaml;PedalsPage.xaml;SdcPage.xaml;TsOverviewPage.xaml;WheelspeedsPage.xaml;
 
