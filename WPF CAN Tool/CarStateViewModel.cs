@@ -91,6 +91,72 @@ public class CarStateViewModel : INotifyPropertyChanged
         set { _avgCellTemp = value; OnPropertyChanged(nameof(AvgCellTemp)); }
     }
 
+    // Wheel speeds
+    private double _flWheelspeed;
+    public double FLWheelspeed
+    {
+        get => _flWheelspeed;
+        set { _flWheelspeed = value; OnPropertyChanged(nameof(FLWheelspeed)); }
+    }
+
+    private double _frWheelspeed;
+    public double FRWheelspeed
+    {
+        get => _frWheelspeed;
+        set { _frWheelspeed = value; OnPropertyChanged(nameof(FRWheelspeed)); }
+    }
+
+    private double _rlWheelspeed;
+    public double RLWheelspeed
+    {
+        get => _rlWheelspeed;
+        set { _rlWheelspeed = value; OnPropertyChanged(nameof(RLWheelspeed)); }
+    }
+
+    private double _rrWheelspeed;
+    public double RRWheelspeed
+    {
+        get => _rrWheelspeed;
+        set { _rrWheelspeed = value; OnPropertyChanged(nameof(RRWheelspeed)); }
+    }
+
+    // Brake temperatures
+    private double _flBrakeTemp;
+    public double FLBrakeTemp
+    {
+        get => _flBrakeTemp;
+        set { _flBrakeTemp = value; OnPropertyChanged(nameof(FLBrakeTemp)); }
+    }
+
+    private double _frBrakeTemp;
+    public double FRBrakeTemp
+    {
+        get => _frBrakeTemp;
+        set { _frBrakeTemp = value; OnPropertyChanged(nameof(FRBrakeTemp)); }
+    }
+
+    private double _rlBrakeTemp;
+    public double RLBrakeTemp
+    {
+        get => _rlBrakeTemp;
+        set { _rlBrakeTemp = value; OnPropertyChanged(nameof(RLBrakeTemp)); }
+    }
+
+    private double _rrBrakeTemp;
+    public double RRBrakeTemp
+    {
+        get => _rrBrakeTemp;
+        set { _rrBrakeTemp = value; OnPropertyChanged(nameof(RRBrakeTemp)); }
+    }
+
+    // Energy setting
+    private int _energySetting;
+    public int EnergySetting
+    {
+        get => _energySetting;
+        set { _energySetting = value; OnPropertyChanged(nameof(EnergySetting)); }
+    }
+
     // SDC placeholders
     private bool _imdOk;
     public bool ImdOk

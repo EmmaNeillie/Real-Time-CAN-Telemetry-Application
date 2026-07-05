@@ -9,4 +9,12 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Include="CAN_Config.dbc" CopyToOutputDirectory="PreserveNewest" />
+    <Compile Remove="obj\**;bin\**" />
+    <EmbeddedResource Remove="obj\**;bin\**" />
+    <None Remove="obj\**;bin\**" />
+    <Page Remove="obj\**;bin\**" />
+  </ItemGroup>
+
 </Project>

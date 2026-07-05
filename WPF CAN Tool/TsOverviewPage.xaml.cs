@@ -7,5 +7,6 @@ public partial class TsOverviewPage : Page
     public TsOverviewPage(CarStateViewModel carState)
     {
         InitializeComponent();
+        DataContext = carState;
     }
 }

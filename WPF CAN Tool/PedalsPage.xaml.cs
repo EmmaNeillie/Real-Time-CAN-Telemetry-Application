@@ -7,5 +7,6 @@ public partial class PedalsPage : Page
     public PedalsPage(CarStateViewModel carState)
     {
         InitializeComponent();
+        DataContext = carState;
     }
 }

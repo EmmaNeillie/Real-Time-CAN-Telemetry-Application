@@ -4,7 +4,8 @@
       Title="SDC"
       Background="Black">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
         <Grid Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -21,7 +22,7 @@
 
             <Border Grid.Row="1" BorderBrush="#FFD700" BorderThickness="2" CornerRadius="8" Padding="12" Margin="0,0,0,20">
                 <StackPanel>
-                    <TextBlock Text="Safety Dataflow Overview"
+                    <TextBlock Text="SDC Overview"
                                Foreground="White"
                                FontSize="22"
                                FontWeight="Bold"
@@ -34,99 +35,71 @@
                 </StackPanel>
             </Border>
 
-            <StackPanel Grid.Row="2" HorizontalAlignment="Center">
+            <WrapPanel Grid.Row="2"
+                       HorizontalAlignment="Center"
+                       Margin="0,10,0,20">
 
-                <WrapPanel HorizontalAlignment="Center" Margin="0,20,0,20">
-                    <!-- E-Stop -->
-                    <Border Width="130" Height="70" Margin="8" CornerRadius="8">
+                <!-- LVMS -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Background" Value="Red"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding EstopOk}" Value="True">
+                                    <DataTrigger Binding="{Binding LvmsOk}" Value="True">
                                         <Setter Property="Background" Value="LimeGreen"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
-                        <TextBlock Text="E-Stop"
-                                   Foreground="Black"
-                                   FontWeight="Bold"
-                                   FontSize="18"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="LVMS" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
 
-                    <Rectangle Width="40" Height="4" Fill="White" VerticalAlignment="Center"/>
-
-                    <!-- IMD -->
-                    <Border Width="130" Height="70" Margin="8" CornerRadius="8">
+                <!-- BSPD -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Background" Value="Red"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ImdOk}" Value="True">
+                                    <DataTrigger Binding="{Binding BspdOk}" Value="True">
                                         <Setter Property="Background" Value="LimeGreen"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
-                        <TextBlock Text="IMD"
-                                   Foreground="Black"
-                                   FontWeight="Bold"
-                                   FontSize="18"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="BSPD" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
 
-                    <Rectangle Width="40" Height="4" Fill="White" VerticalAlignment="Center"/>
-
-                    <!-- BMS -->
-                    <Border Width="130" Height="70" Margin="8" CornerRadius="8">
+                <!-- Kill Switch -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Background" Value="Red"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding BmsOk}" Value="True">
+                                    <DataTrigger Binding="{Binding KillSwitchOk}" Value="True">
                                         <Setter Property="Background" Value="LimeGreen"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
-                        <TextBlock Text="BMS"
-                                   Foreground="Black"
-                                   FontWeight="Bold"
-                                   FontSize="18"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="Kill Switch" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   TextWrapping="Wrap" TextAlignment="Center"/>
                     </Border>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
 
-                    <Rectangle Width="40" Height="4" Fill="White" VerticalAlignment="Center"/>
-
-                    <!-- AMS -->
-                    <Border Width="130" Height="70" Margin="8" CornerRadius="8">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="Red"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding AmsOk}" Value="True">
-                                        <Setter Property="Background" Value="LimeGreen"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Text="AMS"
-                                   Foreground="Black"
-                                   FontWeight="Bold"
-                                   FontSize="18"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
-                    </Border>
-                </WrapPanel>
-
-                <WrapPanel HorizontalAlignment="Center" Margin="0,20,0,20">
-                    <!-- Inertia -->
-                    <Border Width="160" Height="70" Margin="8" CornerRadius="8">
+                <!-- Inertia Switch -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Background" Value="Red"/>
@@ -137,67 +110,281 @@
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
-                        <TextBlock Text="Inertia Switch"
-                                   Foreground="Black"
-                                   FontWeight="Bold"
-                                   FontSize="18"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="Inertia Switch" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   TextWrapping="Wrap" TextAlignment="Center"/>
                     </Border>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
 
-                    <Rectangle Width="40" Height="4" Fill="White" VerticalAlignment="Center"/>
-
-                    <!-- Brake overtravel -->
-                    <Border Width="190" Height="70" Margin="8" CornerRadius="8">
+                <!-- BOTS -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Background" Value="Red"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding BrakeOvertravelOk}" Value="True">
+                                    <DataTrigger Binding="{Binding BotsOk}" Value="True">
                                         <Setter Property="Background" Value="LimeGreen"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
-                        <TextBlock Text="Brake Overtravel"
-                                   Foreground="Black"
-                                   FontWeight="Bold"
-                                   FontSize="18"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="BOTS" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
 
-                    <Rectangle Width="40" Height="4" Fill="White" VerticalAlignment="Center"/>
-
-                    <!-- Main output -->
-                    <Border Width="180" Height="70" Margin="8" CornerRadius="8">
+                <!-- APPS -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Background" Value="Red"/>
                                 <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding EstopOk}" Value="True"/>
-                                            <Condition Binding="{Binding ImdOk}" Value="True"/>
-                                            <Condition Binding="{Binding BmsOk}" Value="True"/>
-                                            <Condition Binding="{Binding AmsOk}" Value="True"/>
-                                            <Condition Binding="{Binding InertiaOk}" Value="True"/>
-                                            <Condition Binding="{Binding BrakeOvertravelOk}" Value="True"/>
-                                        </MultiDataTrigger.Conditions>
+                                    <DataTrigger Binding="{Binding AppsOk}" Value="True">
                                         <Setter Property="Background" Value="LimeGreen"/>
-                                    </MultiDataTrigger>
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
-                        <TextBlock Text="SDC Output"
-                                   Foreground="Black"
-                                   FontWeight="Bold"
-                                   FontSize="20"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="APPS" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
-                </WrapPanel>
-            </StackPanel>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- LHS SB -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding LhsSbOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="LHS SB" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- RHS SB -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RhsSbOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="RHS SB" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Latchboard -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding LatchboardOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="Latchboard" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   TextWrapping="Wrap" TextAlignment="Center"/>
+                    </Border>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- DC -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DcOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="DC" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- HVD -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding HvdOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="HVD" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- MC -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding McOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="MC" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Self Latch -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelfLatchOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="Self Latch" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   TextWrapping="Wrap" TextAlignment="Center"/>
+                    </Border>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- TSAL Switch -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding TsalSwitchOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="TSAL Switch" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   TextWrapping="Wrap" TextAlignment="Center"/>
+                    </Border>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- TSMS -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding TsmsOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="TSMS" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Precharge -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="100" Height="50" Margin="4" CornerRadius="6">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Red"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding PrechargeOk}" Value="True">
+                                        <Setter Property="Background" Value="LimeGreen"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="Precharge" Foreground="Black" FontWeight="Bold" FontSize="14"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Rectangle Width="16" Height="3" Fill="White" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- AIRs / Contactors (output — no trailing connector) -->
+                <Border Width="120" Height="50" Margin="4" CornerRadius="6" VerticalAlignment="Center">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="Red"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding LvmsOk}" Value="True"/>
+                                        <Condition Binding="{Binding BspdOk}" Value="True"/>
+                                        <Condition Binding="{Binding KillSwitchOk}" Value="True"/>
+                                        <Condition Binding="{Binding InertiaOk}" Value="True"/>
+                                        <Condition Binding="{Binding BotsOk}" Value="True"/>
+                                        <Condition Binding="{Binding AppsOk}" Value="True"/>
+                                        <Condition Binding="{Binding LhsSbOk}" Value="True"/>
+                                        <Condition Binding="{Binding RhsSbOk}" Value="True"/>
+                                        <Condition Binding="{Binding LatchboardOk}" Value="True"/>
+                                        <Condition Binding="{Binding DcOk}" Value="True"/>
+                                        <Condition Binding="{Binding HvdOk}" Value="True"/>
+                                        <Condition Binding="{Binding McOk}" Value="True"/>
+                                        <Condition Binding="{Binding SelfLatchOk}" Value="True"/>
+                                        <Condition Binding="{Binding TsalSwitchOk}" Value="True"/>
+                                        <Condition Binding="{Binding TsmsOk}" Value="True"/>
+                                        <Condition Binding="{Binding PrechargeOk}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="LimeGreen"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <TextBlock Text="AIRs" Foreground="Black" FontWeight="Bold" FontSize="13"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               TextWrapping="Wrap" TextAlignment="Center" Padding="4"/>
+                </Border>
+
+            </WrapPanel>
+
         </Grid>
     </ScrollViewer>
 </Page>

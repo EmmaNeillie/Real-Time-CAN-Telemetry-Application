@@ -7,5 +7,6 @@ public partial class LvOverviewPage : Page
     public LvOverviewPage(CarStateViewModel carState)
     {
         InitializeComponent();
+        DataContext = carState;
     }
 }

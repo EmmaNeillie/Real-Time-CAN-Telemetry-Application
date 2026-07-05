@@ -310,7 +310,7 @@
                                        FontSize="16"
                                        FontWeight="Bold"
                                        HorizontalAlignment="Center"/>
-                            <TextBlock Text="{Binding FLWheelSpeed, StringFormat={}{0:F1} km/h}"
+                            <TextBlock Text="{Binding FLWheelspeed, StringFormat={}{0:F1} km/h}"
                                        Foreground="#FFD700"
                                        FontSize="22"
                                        FontWeight="Bold"
@@ -338,7 +338,7 @@
                                        FontSize="16"
                                        FontWeight="Bold"
                                        HorizontalAlignment="Center"/>
-                            <TextBlock Text="{Binding FRWheelSpeed, StringFormat={}{0:F1} km/h}"
+                            <TextBlock Text="{Binding FRWheelspeed, StringFormat={}{0:F1} km/h}"
                                        Foreground="#FFD700"
                                        FontSize="22"
                                        FontWeight="Bold"
@@ -366,7 +366,7 @@
                                        FontSize="16"
                                        FontWeight="Bold"
                                        HorizontalAlignment="Center"/>
-                            <TextBlock Text="{Binding RLWheelSpeed, StringFormat={}{0:F1} km/h}"
+                            <TextBlock Text="{Binding RLWheelspeed, StringFormat={}{0:F1} km/h}"
                                        Foreground="#FFD700"
                                        FontSize="22"
                                        FontWeight="Bold"
@@ -394,7 +394,7 @@
                                        FontSize="16"
                                        FontWeight="Bold"
                                        HorizontalAlignment="Center"/>
-                            <TextBlock Text="{Binding RRWheelSpeed, StringFormat={}{0:F1} km/h}"
+                            <TextBlock Text="{Binding RRWheelspeed, StringFormat={}{0:F1} km/h}"
                                        Foreground="#FFD700"
                                        FontSize="22"
                                        FontWeight="Bold"
@@ -423,7 +423,7 @@
                 <Border BorderBrush="#FFD700" BorderThickness="1" CornerRadius="8" Margin="6" Padding="12">
                     <StackPanel>
                         <TextBlock Text="FL" Foreground="#888" FontSize="14" HorizontalAlignment="Center"/>
-                        <TextBlock Text="{Binding FLWheelSpeed, StringFormat={}{0:F1}}"
+                        <TextBlock Text="{Binding FLWheelspeed, StringFormat={}{0:F1}}"
                                    Foreground="#FFD700" FontSize="26" FontWeight="Bold" HorizontalAlignment="Center"/>
                         <TextBlock Text="km/h" Foreground="#555" FontSize="11" HorizontalAlignment="Center"/>
                     </StackPanel>
@@ -431,7 +431,7 @@
                 <Border BorderBrush="#FFD700" BorderThickness="1" CornerRadius="8" Margin="6" Padding="12">
                     <StackPanel>
                         <TextBlock Text="FR" Foreground="#888" FontSize="14" HorizontalAlignment="Center"/>
-                        <TextBlock Text="{Binding FRWheelSpeed, StringFormat={}{0:F1}}"
+                        <TextBlock Text="{Binding FRWheelspeed, StringFormat={}{0:F1}}"
                                    Foreground="#FFD700" FontSize="26" FontWeight="Bold" HorizontalAlignment="Center"/>
                         <TextBlock Text="km/h" Foreground="#555" FontSize="11" HorizontalAlignment="Center"/>
                     </StackPanel>
@@ -439,7 +439,7 @@
                 <Border BorderBrush="#FFD700" BorderThickness="1" CornerRadius="8" Margin="6" Padding="12">
                     <StackPanel>
                         <TextBlock Text="RL" Foreground="#888" FontSize="14" HorizontalAlignment="Center"/>
-                        <TextBlock Text="{Binding RLWheelSpeed, StringFormat={}{0:F1}}"
+                        <TextBlock Text="{Binding RLWheelspeed, StringFormat={}{0:F1}}"
                                    Foreground="#FFD700" FontSize="26" FontWeight="Bold" HorizontalAlignment="Center"/>
                         <TextBlock Text="km/h" Foreground="#555" FontSize="11" HorizontalAlignment="Center"/>
                     </StackPanel>
@@ -447,7 +447,7 @@
                 <Border BorderBrush="#FFD700" BorderThickness="1" CornerRadius="8" Margin="6" Padding="12">
                     <StackPanel>
                         <TextBlock Text="RR" Foreground="#888" FontSize="14" HorizontalAlignment="Center"/>
-                        <TextBlock Text="{Binding RRWheelSpeed, StringFormat={}{0:F1}}"
+                        <TextBlock Text="{Binding RRWheelspeed, StringFormat={}{0:F1}}"
                                    Foreground="#FFD700" FontSize="26" FontWeight="Bold" HorizontalAlignment="Center"/>
                         <TextBlock Text="km/h" Foreground="#555" FontSize="11" HorizontalAlignment="Center"/>
                     </StackPanel>
