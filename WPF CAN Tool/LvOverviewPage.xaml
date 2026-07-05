@@ -151,7 +151,7 @@
                 </UniformGrid>
             </GroupBox>
 
-            <!-- Optional raw message list placeholder -->
+            <!-- Raw CAN message list -->
             <Border Grid.Row="3" BorderBrush="#FFD700" BorderThickness="1" CornerRadius="8" Padding="12">
                 <StackPanel>
                     <TextBlock Text="Raw CAN / Status Area"
@@ -159,9 +159,21 @@
                                FontSize="20"
                                FontWeight="Bold"
                                Margin="0,0,0,10"/>
-                    <TextBlock Text="Add DataGrid or log output here."
-                               Foreground="White"
-                               FontSize="16"/>
+                    <Border BorderBrush="#333333"
+                            BorderThickness="1"
+                            Background="#101010"
+                            Padding="8"
+                            MinHeight="180"
+                            MaxHeight="320">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Auto">
+                            <TextBlock Text="{Binding RawCanMessages}"
+                                       Foreground="White"
+                                       FontFamily="Consolas"
+                                       FontSize="13"
+                                       TextWrapping="NoWrap"/>
+                        </ScrollViewer>
+                    </Border>
                 </StackPanel>
             </Border>
         </Grid>

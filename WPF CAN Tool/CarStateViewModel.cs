@@ -221,6 +221,13 @@ public class CarStateViewModel : INotifyPropertyChanged
         set { _energySetting = value; OnPropertyChanged(nameof(EnergySetting)); }
     }
 
+    private string _rawCanMessages = "Waiting for CAN frames...";
+    public string RawCanMessages
+    {
+        get => _rawCanMessages;
+        set { _rawCanMessages = value; OnPropertyChanged(nameof(RawCanMessages)); }
+    }
+
     // SDC placeholders
     private bool _imdOk;
     public bool ImdOk

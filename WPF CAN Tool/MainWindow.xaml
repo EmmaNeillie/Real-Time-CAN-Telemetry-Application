@@ -46,6 +46,31 @@
                         Margin="15,8"
                         Click="Wheelspeeds_Click"/>
 
+                <Separator Margin="15,20,15,12" Background="#FFD700"/>
+
+                <TextBlock Text="CAN Log"
+                           Foreground="#FFD700"
+                           FontSize="16"
+                           FontWeight="Bold"
+                           Margin="20,0,20,8"/>
+
+                <Button x:Name="StartRecordingButton"
+                        Content="Start Recording"
+                        Height="40"
+                        Margin="15,6"
+                        Click="StartRecording_Click"/>
+
+                <Button x:Name="StopRecordingButton"
+                        Content="Stop Recording"
+                        Height="40"
+                        Margin="15,6"
+                        IsEnabled="False"
+                        Click="StopRecording_Click"/>
+
+                <Button Content="Playback Log"
+                        Height="40"
+                        Margin="15,6"
+                        Click="PlaybackLog_Click"/>
 
             </StackPanel>
         </Border>

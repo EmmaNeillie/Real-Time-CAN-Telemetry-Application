@@ -7,6 +7,8 @@ using System.IO;
 using Microsoft.Win32;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Diagnostics;
+using System.Globalization;
 
 namespace WPF_CAN_Tool
 {
@@ -32,6 +34,12 @@ namespace WPF_CAN_Tool
         private CarStateViewModel _carState = new CarStateViewModel();
 
         private DbcFileManager _dbcFileManager = new DbcFileManager();
+        private readonly object _recordingLock = new object();
+        private StreamWriter? _recordingWriter;
+        private Stopwatch? _recordingStopwatch;
+        private bool _isRecording;
+        private const int MaxRawCanMessages = 80;
+        private readonly Queue<string> _rawCanMessages = new Queue<string>();
 
         public MainWindow()
         {
@@ -253,6 +261,13 @@ namespace WPF_CAN_Tool
 
         private void OnFrameReceived(CanFrame frame)
         {
+            AppendRawCanMessage(FormatCanFrame(frame));
+            RecordFrame(frame);
+            ProcessFrame(frame);
+        }
+
+        private void ProcessFrame(CanFrame frame)
+        {
             // Filter by CAN ID
             if (_filterCanIds.Count > 0 && !_filterCanIds.Contains(frame.Id))
                 return;
@@ -264,9 +279,188 @@ namespace WPF_CAN_Tool
                 UpdateCarState(decodedSignals);
             }
 
-            string msgData = BitConverter.ToString(frame.Data);
-            string output = $"ID: 0x{frame.Id:X3}, Data: {msgData}";
-            System.Diagnostics.Debug.WriteLine(output);
+            System.Diagnostics.Debug.WriteLine(FormatCanFrame(frame));
+        }
+
+        private void StartRecording_Click(object sender, RoutedEventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "CAN Log (*.canlog)|*.canlog|CSV Files (*.csv)|*.csv|All Files (*.*)|*.*",
+                Title = "Save CAN Log",
+                FileName = $"can-log-{DateTime.Now:yyyyMMdd-HHmmss}.canlog"
+            };
+
+            if (saveFileDialog.ShowDialog() != true)
+                return;
+
+            try
+            {
+                lock (_recordingLock)
+                {
+                    _recordingWriter?.Dispose();
+                    _recordingWriter = new StreamWriter(saveFileDialog.FileName);
+                    _recordingWriter.WriteLine("ElapsedMs,IdHex,IsExtended,Dlc,DataHex");
+                    _recordingStopwatch = Stopwatch.StartNew();
+                    _isRecording = true;
+                }
+
+                StartRecordingButton.IsEnabled = false;
+                StopRecordingButton.IsEnabled = true;
+                Title = $"{Title} - [RECORDING]";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to start CAN recording: {ex.Message}", "Recording Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void StopRecording_Click(object sender, RoutedEventArgs e)
+        {
+            StopRecording();
+        }
+
+        private async void PlaybackLog_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = "CAN Log (*.canlog)|*.canlog|CSV Files (*.csv)|*.csv|All Files (*.*)|*.*",
+                Title = "Open CAN Log",
+                CheckFileExists = true
+            };
+
+            if (openFileDialog.ShowDialog() != true)
+                return;
+
+            try
+            {
+                StopRecording();
+                await PlaybackLogAsync(openFileDialog.FileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to play CAN log: {ex.Message}", "Playback Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void RecordFrame(CanFrame frame)
+        {
+            lock (_recordingLock)
+            {
+                if (!_isRecording || _recordingWriter == null || _recordingStopwatch == null)
+                    return;
+
+                string dataHex = BitConverter.ToString(frame.Data, 0, Math.Min(frame.Dlc, (byte)frame.Data.Length)).Replace("-", "");
+                _recordingWriter.WriteLine($"{_recordingStopwatch.ElapsedMilliseconds},{frame.Id:X},{frame.IsExtended},{frame.Dlc},{dataHex}");
+            }
+        }
+
+        private void StopRecording()
+        {
+            lock (_recordingLock)
+            {
+                _isRecording = false;
+                _recordingStopwatch?.Stop();
+                _recordingStopwatch = null;
+                _recordingWriter?.Dispose();
+                _recordingWriter = null;
+            }
+
+            StartRecordingButton.IsEnabled = true;
+            StopRecordingButton.IsEnabled = false;
+            Title = Title.Replace(" - [RECORDING]", "");
+        }
+
+        private async Task PlaybackLogAsync(string filePath)
+        {
+            long previousElapsedMs = 0;
+
+            foreach (var line in File.ReadLines(filePath).Skip(1))
+            {
+                if (TryParseLogLine(line, out var elapsedMs, out var frame))
+                {
+                    long delay = Math.Min(250, Math.Max(0, elapsedMs - previousElapsedMs));
+                    if (delay > 0)
+                        await Task.Delay((int)delay);
+
+                    AppendRawCanMessage(FormatCanFrame(frame));
+                    ProcessFrame(frame);
+                    previousElapsedMs = elapsedMs;
+                }
+            }
+        }
+
+        private void AppendRawCanMessage(string message)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                _rawCanMessages.Enqueue(message);
+                while (_rawCanMessages.Count > MaxRawCanMessages)
+                    _rawCanMessages.Dequeue();
+
+                _carState.RawCanMessages = string.Join(Environment.NewLine, _rawCanMessages);
+            }));
+        }
+
+        private static string FormatCanFrame(CanFrame frame)
+        {
+            byte[] data = frame.Data ?? Array.Empty<byte>();
+            int dataLength = Math.Min(frame.Dlc, data.Length);
+            string dataHex = dataLength > 0
+                ? BitConverter.ToString(data, 0, dataLength).Replace("-", " ")
+                : string.Empty;
+            string frameType = frame.IsExtended ? "EXT" : "STD";
+            string idHex = frame.IsExtended ? frame.Id.ToString("X8") : frame.Id.ToString("X3");
+            DateTime timestamp = frame.Timestamp == default ? DateTime.Now : frame.Timestamp;
+
+            return $"{timestamp:HH:mm:ss.fff} {frameType} ID: 0x{idHex} DLC: {frame.Dlc} Data: {dataHex}";
+        }
+
+        private static bool TryParseLogLine(string line, out long elapsedMs, out CanFrame frame)
+        {
+            elapsedMs = 0;
+            frame = new CanFrame();
+
+            string[] parts = line.Split(',');
+            if (parts.Length != 5)
+                return false;
+
+            if (!long.TryParse(parts[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out elapsedMs))
+                return false;
+            if (!uint.TryParse(parts[1], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var id))
+                return false;
+            if (!bool.TryParse(parts[2], out var isExtended))
+                return false;
+            if (!byte.TryParse(parts[3], NumberStyles.Integer, CultureInfo.InvariantCulture, out var dlc))
+                return false;
+
+            byte[] data = ParseHexBytes(parts[4]);
+            frame = new CanFrame
+            {
+                Id = id,
+                IsExtended = isExtended,
+                Dlc = dlc,
+                Data = data,
+                Timestamp = DateTime.Now
+            };
+
+            return true;
+        }
+
+        private static byte[] ParseHexBytes(string hex)
+        {
+            if (string.IsNullOrWhiteSpace(hex))
+                return Array.Empty<byte>();
+
+            int byteCount = hex.Length / 2;
+            byte[] bytes = new byte[byteCount];
+
+            for (int i = 0; i < byteCount; i++)
+            {
+                bytes[i] = byte.Parse(hex.Substring(i * 2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+            }
+
+            return bytes;
         }
 
         private void ConnectToDatalogger()
@@ -486,6 +680,7 @@ namespace WPF_CAN_Tool
 
         protected override void OnClosed(System.EventArgs e)
         {
+            StopRecording();
             _receiver?.Dispose();
             _receiver = null;
             base.OnClosed(e);

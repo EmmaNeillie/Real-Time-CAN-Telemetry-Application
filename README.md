@@ -158,6 +158,24 @@ private const int DefaultPort = 5000;
 
 Update these when the datalogger IP/port is known.
 
+## CAN Logging and Playback
+
+The left navigation includes CAN log controls:
+
+- **Start Recording**: saves received raw CAN frames to a `.canlog` file.
+- **Stop Recording**: closes the current log file.
+- **Playback Log**: replays a saved log through the same decoder and UI update path.
+
+The log format is CSV:
+
+```text
+ElapsedMs,IdHex,IsExtended,Dlc,DataHex
+0,110,False,1,C0
+52,330,False,4,0019003C
+```
+
+Playback uses the recorded timing, capped to short delays so long logs remain practical to review.
+
 ## Adding a New UI Signal
 
 1. Add the signal to the DBC.
@@ -180,4 +198,3 @@ If OneDrive locks generated files in `bin` or `obj`, build from Visual Studio or
 - TS cell/module heat map is marked TBD until module-level CAN details exist.
 - Wireless host/port are not configurable in the UI.
 - Only one DBC is active at a time.
-- No CAN logging/playback UI yet.
